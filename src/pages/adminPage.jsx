@@ -3,6 +3,8 @@ import { MdSpaceDashboard } from "react-icons/md";
 import { MdProductionQuantityLimits } from "react-icons/md";
 import { FaFirstOrderAlt } from "react-icons/fa6";
 import { FaUserSecret } from "react-icons/fa";
+import ProductsAdminPage from "./admin/productsAdminPage";
+import AddProductPage from "./admin/addProductPage";
 
 export default function AdminPage() {
     return (
@@ -16,10 +18,11 @@ export default function AdminPage() {
                     <Link to="/admin/users" className="flex items-center p-4 hover:text-gray-200 gap-2"><FaUserSecret /> Users</Link>
                 </div>
             </div>
-            <div className="w-[calc(100%-300px)] bg-blue-900 h-full">
+            <div className="w-[calc(100%-300px)] bg-blue-900 h-full overflow-y-auto">
                 <Routes path="/">
                     <Route path="/" element={<div>Admin Dashboard</div>} />
-                    <Route path="/products" element={<h1>Products</h1>} />
+                    <Route path="/products" element={<ProductsAdminPage />} />
+                    <Route path="/products/addProduct" element={<AddProductPage />} />
                     <Route path="/orders" element={<h1>Orders</h1>} />
                     <Route path="/users" element={<h1>Users</h1>} />
                 </Routes>
