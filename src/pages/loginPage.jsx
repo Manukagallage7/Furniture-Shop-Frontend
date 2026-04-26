@@ -10,7 +10,7 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     async function login(){
-        await axios.post(import.meta.env.VITE_Backend_URL + "/api/users/login", {
+        await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/users/login", {
             email: email,
             password: password
         }).then((response) => {
