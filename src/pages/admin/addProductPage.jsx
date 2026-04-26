@@ -171,7 +171,7 @@ export default function AddProductPage() {
             };
 
             // Submit product to backend (which saves to MongoDB)
-            const res = await axios.post(import.meta.env.VITE_Backend_URL + "/api/products/create", productPayload, {
+            const res = await axios.post(import.meta.env.VITE_BACKEND_URL+ "/api/products/create", productPayload, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
