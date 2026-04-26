@@ -2,9 +2,12 @@ import { BiPlus } from 'react-icons/bi';
 import { Link, useNavigate } from "react-router-dom";
 import {useState, useEffect} from 'react';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function ProductsAdminPage() {
     const [products, setProducts] = useState([])
+    const [deleteConfirm, setDeleteConfirm] = useState(null)
+    const [isDeleting, setIsDeleting] = useState(false)
     const navigate = useNavigate()
 
     const toggleAvailability = (index) => {
@@ -14,27 +17,36 @@ export default function ProductsAdminPage() {
     };
 
     const deleteProduct = (productId, productName) => {
-        // Ask for confirmation
-        const confirmed = window.confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`);
-        
-        if (!confirmed) return;
+        // Show custom confirmation dialog
+        setDeleteConfirm({ productId, productName });
+    };
 
+    const confirmDelete = async () => {
+        if (!deleteConfirm) return;
+
+        setIsDeleting(true);
         const token = localStorage.getItem('token');
         
-        axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/products/delete/${productId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then((res) => {
+        try {
+            await axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/products/delete/${deleteConfirm.productId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             // Remove the deleted product from the list
-            setProducts(products.filter(p => p.productId !== productId));
-            alert('Product deleted successfully!');
-        })
-        .catch((err) => {
+            setProducts(products.filter(p => p.productId !== deleteConfirm.productId));
+            toast.success('Product deleted successfully!');
+            setDeleteConfirm(null);
+        } catch (err) {
             console.error('Error deleting product:', err);
-            alert('Failed to delete product. Please try again.');
-        });
+            toast.error('Failed to delete product. Please try again.');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const cancelDelete = () => {
+        setDeleteConfirm(null);
     };
 
     //backend data retrieval
@@ -192,6 +204,48 @@ export default function ProductsAdminPage() {
             <Link to="/admin/products/addProduct" className='fixed right-[20px] sm:right-[40px] bottom-[20px] sm:bottom-[40px] bg-gradient-to-br from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 rounded-full p-3 sm:p-4 shadow-2xl cursor-pointer transition-all duration-200 transform hover:scale-110 flex items-center justify-center border-4 border-white'>
                 <BiPlus className='text-3xl sm:text-4xl text-white'/>
             </Link>
+
+            {/* Delete Confirmation Modal */}
+            {deleteConfirm && (
+                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+                    <div className='bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 sm:p-8 animate-pulse'>
+                        <div className='mb-4'>
+                            <h2 className='text-xl sm:text-2xl font-bold text-red-600'>Delete Product</h2>
+                        </div>
+                        <div className='mb-6'>
+                            <p className='text-gray-700 text-sm sm:text-base'>
+                                Are you sure you want to delete <span className='font-bold text-red-600'>"{deleteConfirm.productName}"</span>?
+                            </p>
+                            <p className='text-gray-500 text-xs sm:text-sm mt-2'>This action cannot be undone.</p>
+                        </div>
+                        <div className='flex gap-3 sm:gap-4'>
+                            <button
+                                onClick={cancelDelete}
+                                disabled={isDeleting}
+                                className='flex-1 px-4 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold rounded-lg transition disabled:opacity-50'
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                disabled={isDeleting}
+                                className='flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-bold rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-2'
+                            >
+                                {isDeleting ? (
+                                    <>
+                                        <span className='animate-spin'>⏳</span>
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    <>
+                                        🗑️ Delete
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
