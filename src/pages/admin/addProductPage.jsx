@@ -249,6 +249,16 @@ export default function AddProductPage() {
     return (
         <div className='w-full min-h-screen bg-gradient-to-br from-stone-50 via-amber-50 to-stone-100 py-6 sm:py-8 md:py-12 px-3 sm:px-4 overflow-y-auto'>
             <div className="max-w-6xl mx-auto">
+                {/* Back Button */}
+                <div className="mb-4 sm:mb-6">
+                    <button
+                        onClick={() => navigate('/admin/products')}
+                        className='flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition duration-200 shadow-md hover:shadow-lg text-xs sm:text-sm'
+                    >
+                        ← Back to Products
+                    </button>
+                </div>
+
                 {/* Header Section */}
                 <div className="mb-6 sm:mb-8">
                     <div className="bg-gradient-to-r from-amber-800 to-amber-700 rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-5 sm:p-6 md:p-8 text-white">
