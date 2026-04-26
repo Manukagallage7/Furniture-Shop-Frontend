@@ -7,6 +7,36 @@ export default function ProductsAdminPage() {
     const [products, setProducts] = useState([])
     const navigate = useNavigate()
 
+    const toggleAvailability = (index) => {
+        const updatedProducts = [...products];
+        updatedProducts[index].isAvailable = !updatedProducts[index].isAvailable;
+        setProducts(updatedProducts);
+    };
+
+    const deleteProduct = (productId, productName) => {
+        // Ask for confirmation
+        const confirmed = window.confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`);
+        
+        if (!confirmed) return;
+
+        const token = localStorage.getItem('token');
+        
+        axios.delete(import.meta.env.VITE_BACKEND_URL + `/api/products/delete/${productId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then((res) => {
+            // Remove the deleted product from the list
+            setProducts(products.filter(p => p.productId !== productId));
+            alert('Product deleted successfully!');
+        })
+        .catch((err) => {
+            console.error('Error deleting product:', err);
+            alert('Failed to delete product. Please try again.');
+        });
+    };
+
     //backend data retrieval
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -17,7 +47,20 @@ export default function ProductsAdminPage() {
             }
         })
         .then((res)=>{
-            setProducts(res.data)
+            const data = res.data;
+            // Handle different API response structures
+            if (Array.isArray(data)) {
+                setProducts(data);
+            } else if (Array.isArray(data?.product)) {
+                setProducts(data.product);
+            } else if (Array.isArray(data?.data)) {
+                setProducts(data.data);
+            } else if (Array.isArray(data?.products)) {
+                setProducts(data.products);
+            } else {
+                console.warn('Unexpected API response structure:', data);
+                setProducts([]);
+            }
         })
         .catch((err)=>{
             console.error('Error fetching products:', err);
@@ -67,20 +110,20 @@ export default function ProductsAdminPage() {
                                 products.map((product, index) => (
                                     <tr key={index} className='border-b border-gray-200 hover:bg-amber-50 transition duration-200'>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm font-mono font-bold text-gray-700'>{product.productId}</td>
-                                        <td className='p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-800 max-w-xs truncate'>{product.name}</td>
+                                        <td className='p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-800 max-w-[200px] break-words'>{product.name}</td>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm'>
-                                            <div className='text-gray-800 font-bold'>Rs {product.labelledPrice?.toLocaleString() || '0'}</div>
-                                            <div className='text-green-700 font-bold text-xs'>Rs {product.actualPrice?.toLocaleString() || '0'}</div>
+                                            <div className='text-gray-600 text-xs mb-1'>
+                                                <span className='font-semibold'>Listed:</span> Rs {product.labelledPrice?.toLocaleString() || '0'}
+                                            </div>
+                                            <div className='text-green-700 font-bold text-xs'>
+                                                <span className='font-semibold'>Actual:</span> Rs {product.actualPrice?.toLocaleString() || '0'}
+                                            </div>
                                         </td>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm'>
                                             <div className='flex items-center gap-2'>
-                                                <div className='w-12 h-2 bg-gray-200 rounded-full overflow-hidden'>
-                                                    <div
-                                                        className={`h-full ${product.stock > 20 ? 'bg-green-500' : product.stock > 5 ? 'bg-yellow-500' : 'bg-red-500'}`}
-                                                        style={{ width: `${Math.min((product.stock / 100) * 100, 100)}%` }}
-                                                    ></div>
-                                                </div>
-                                                <span className='font-bold text-gray-800 min-w-fit'>{product.stock || 0}</span>
+                                                <span className={`font-bold px-2 py-1 rounded text-white text-xs ${product.stock > 20 ? 'bg-green-500' : product.stock > 5 ? 'bg-yellow-500' : 'bg-red-500'}`}>
+                                                    {product.stock || 0}
+                                                </span>
                                             </div>
                                         </td>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm text-gray-700 font-medium'>{product.category || 'N/A'}</td>
@@ -96,9 +139,12 @@ export default function ProductsAdminPage() {
                                             </div>
                                         </td>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm'>
-                                            <span className={`px-2 sm:px-3 py-1 rounded-full font-bold text-xs whitespace-nowrap ${product.isAvailable ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                            <button
+                                                onClick={() => toggleAvailability(index)}
+                                                className={`px-2 sm:px-3 py-1 rounded-full font-bold text-xs whitespace-nowrap transition-all cursor-pointer hover:shadow-md ${product.isAvailable ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200'}`}
+                                            >
                                                 {product.isAvailable ? '✅ Available' : '❌ Unavailable'}
-                                            </span>
+                                            </button>
                                         </td>
                                         <td className='p-3 sm:p-4'>
                                             {product.images && product.images[0] && (
@@ -126,7 +172,10 @@ export default function ProductsAdminPage() {
                                                 >
                                                     ✏️ Edit
                                                 </button>
-                                                <button className='px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm font-bold rounded transition shadow-md hover:shadow-lg'>
+                                                <button 
+                                                    onClick={() => deleteProduct(product.productId, product.name)}
+                                                    className='px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm font-bold rounded transition shadow-md hover:shadow-lg'
+                                                >
                                                     🗑️ Delete
                                                 </button>
                                             </div>
