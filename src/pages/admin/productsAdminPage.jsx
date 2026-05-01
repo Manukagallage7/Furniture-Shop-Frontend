@@ -81,10 +81,10 @@ export default function ProductsAdminPage() {
     }, [])
 
     return (
-        <div className='w-full h-full bg-gradient-to-br from-stone-50 via-amber-50 to-stone-100 p-4 sm:p-6 md:p-8 overflow-auto'>
+        <div className='w-full h-full bg-linear-to-br from-stone-50 via-amber-50 to-stone-100 p-4 sm:p-6 md:p-8 overflow-auto'>
             {/* Header Section */}
             <div className="mb-6 sm:mb-8">
-                <div className="bg-gradient-to-r from-amber-800 to-amber-700 rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-5 sm:p-6 md:p-8 text-white flex justify-between items-center">
+                <div className="bg-linear-to-r from-amber-800 to-amber-700 rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-5 sm:p-6 md:p-8 text-white flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 sm:mb-2">Manage Products</h1>
                         <p className="text-amber-100 text-sm sm:text-base md:text-lg">Total Products: <span className="font-bold">{products.length}</span></p>
@@ -95,7 +95,7 @@ export default function ProductsAdminPage() {
             {/* Table Section */}
             <div className='bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl overflow-x-auto border-2 border-gray-200'>
                 <table className='w-full'>
-                    <thead className='bg-gradient-to-r from-amber-700 to-amber-600 text-white sticky top-0'>
+                    <thead className='bg-linear-to-r from-amber-700 to-amber-600 text-white sticky top-0'>
                         <tr>
                             <th className='border-b-2 border-gray-300 p-3 sm:p-4 text-left text-xs sm:text-sm font-bold uppercase tracking-wide'>ID</th>
                             <th className='border-b-2 border-gray-300 p-3 sm:p-4 text-left text-xs sm:text-sm font-bold uppercase tracking-wide'>Name</th>
@@ -122,7 +122,7 @@ export default function ProductsAdminPage() {
                                 products.map((product, index) => (
                                     <tr key={index} className='border-b border-gray-200 hover:bg-amber-50 transition duration-200'>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm font-mono font-bold text-gray-700'>{product.productId}</td>
-                                        <td className='p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-800 max-w-[200px] break-words'>{product.name}</td>
+                                        <td className='p-3 sm:p-4 text-xs sm:text-sm font-semibold text-gray-800 max-w-50 wrap-break-word'>{product.name}</td>
                                         <td className='p-3 sm:p-4 text-xs sm:text-sm'>
                                             <div className='text-gray-600 text-xs mb-1'>
                                                 <span className='font-semibold'>Listed:</span> Rs {product.labelledPrice?.toLocaleString() || '0'}
@@ -178,13 +178,15 @@ export default function ProductsAdminPage() {
                                                 >
                                                     👁️ View
                                                 </button>
-                                                <button 
-                                                    onClick={() => navigate(`/admin/products/edit/${product.productId}`)} 
+                                                <button
+                                                    onClick={() => navigate(`/admin/products/editProduct`,
+                                                        { state: { product } }
+                                                    )}
                                                     className='px-2 sm:px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-xs sm:text-sm font-bold rounded transition shadow-md hover:shadow-lg'
                                                 >
                                                     ✏️ Edit
                                                 </button>
-                                                <button 
+                                                <button
                                                     onClick={() => deleteProduct(product.productId, product.name)}
                                                     className='px-2 sm:px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-xs sm:text-sm font-bold rounded transition shadow-md hover:shadow-lg'
                                                 >
@@ -201,7 +203,7 @@ export default function ProductsAdminPage() {
             </div>
 
             {/* Add Product Button */}
-            <Link to="/admin/products/addProduct" className='fixed right-[20px] sm:right-[40px] bottom-[20px] sm:bottom-[40px] bg-gradient-to-br from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 rounded-full p-3 sm:p-4 shadow-2xl cursor-pointer transition-all duration-200 transform hover:scale-110 flex items-center justify-center border-4 border-white'>
+            <Link to="/admin/products/addProduct" className='fixed right-5 sm:right-10 bottom-5 sm:bottom-10 bg-linear-to-br from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 rounded-full p-3 sm:p-4 shadow-2xl cursor-pointer transition-all duration-200 transform hover:scale-110 flex items-center justify-center border-4 border-white'>
                 <BiPlus className='text-3xl sm:text-4xl text-white'/>
             </Link>
 
