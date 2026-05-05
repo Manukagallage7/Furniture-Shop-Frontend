@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import Loader from '../../components/loader';
 
 export default function ProductsAdminPage() {
     const [products, setProducts] = useState([])
+    const [isloading, setIsLoading] = useState(true)
     const [deleteConfirm, setDeleteConfirm] = useState(null)
     const [isDeleting, setIsDeleting] = useState(false)
     const navigate = useNavigate()
@@ -37,6 +39,7 @@ export default function ProductsAdminPage() {
             setProducts(products.filter(p => p.productId !== deleteConfirm.productId));
             toast.success('Product deleted successfully!');
             setDeleteConfirm(null);
+            setIsLoading(!isloading);
         } catch (err) {
             console.error('Error deleting product:', err);
             toast.error('Failed to delete product. Please try again.');
@@ -51,6 +54,7 @@ export default function ProductsAdminPage() {
 
     //backend data retrieval
     useEffect(() => {
+        if (isloading) {
         const token = localStorage.getItem('token');
         
         axios.get(import.meta.env.VITE_BACKEND_URL + '/api/products/get', {
@@ -73,12 +77,19 @@ export default function ProductsAdminPage() {
                 console.warn('Unexpected API response structure:', data);
                 setProducts([]);
             }
+
+            toast.success('Products loaded successfully!', { id: 'products-loaded' });
         })
         .catch((err)=>{
             console.error('Error fetching products:', err);
             setProducts([])
         })
-    }, [])
+        .finally(() => {
+            setIsLoading(!isloading);
+        })
+        }
+    }, [isloading])
+    
 
     return (
         <div className='w-full h-full bg-linear-to-br from-stone-50 via-amber-50 to-stone-100 p-4 sm:p-6 md:p-8 overflow-auto'>
@@ -93,6 +104,9 @@ export default function ProductsAdminPage() {
             </div>
 
             {/* Table Section */}
+            {isloading ? (
+                <Loader />
+            ) : (
             <div className='bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl overflow-x-auto border-2 border-gray-200'>
                 <table className='w-full'>
                     <thead className='bg-linear-to-r from-amber-700 to-amber-600 text-white sticky top-0'>
@@ -201,6 +215,7 @@ export default function ProductsAdminPage() {
                     </tbody>
                 </table>
             </div>
+            )}
 
             {/* Add Product Button */}
             <Link to="/admin/products/addProduct" className='fixed right-5 sm:right-10 bottom-5 sm:bottom-10 bg-linear-to-br from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 rounded-full p-3 sm:p-4 shadow-2xl cursor-pointer transition-all duration-200 transform hover:scale-110 flex items-center justify-center border-4 border-white'>
