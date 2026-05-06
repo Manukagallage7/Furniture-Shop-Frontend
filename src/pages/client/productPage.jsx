@@ -17,9 +17,21 @@ export default function ProductPage() {
                 }
             })
                 .then((res) => {
-                    const data = Array.isArray(res.data) ? res.data : res.data?.products || [];
-                    setProducts(data)
-                    setIsLoading(false)
+                    const data = res.data;
+
+                    if (Array.isArray(data)) {
+                        setProducts(data);
+                    } else if (Array.isArray(data?.product)) {
+                        setProducts(data.product);
+                    } else if (Array.isArray(data?.data)) {
+                        setProducts(data.data);
+                    } else if (Array.isArray(data?.products)) {
+                        setProducts(data.products);
+                    } else {
+                        console.warn('Unexpected products API response:', data);
+                    }
+
+                    console.log('Products fetched successfully:', products);
                 })
                 .catch((err) => {
                     console.error('Error fetching products:', err);
@@ -36,7 +48,7 @@ export default function ProductPage() {
             {isloading ? (
                 <Loader />
             ) : (
-                <div className='w-full '>
+                <div className='w-full flex flex-wrap justify-center items-start p-4'>
                     {products.map((product) => (
                         <ProductCard key={product.productId} product={product} />
                     ))}
