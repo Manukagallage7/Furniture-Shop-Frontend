@@ -14,8 +14,14 @@ export default function ProductOverviewPage() {
     const formatCurrency = (value) => `Rs. ${Number(value ?? 0).toFixed(2)}`
 
     useEffect(() => {
+        if (!params?.productId) {
+            console.error('Missing productId in route params', params)
+            setStatus('error')
+            toast.error('Missing product ID.')
+            return
+        }
         const token = localStorage.getItem('token');
-        axios.get(import.meta.env.VITE_BACKEND_URL + `/api/products/get/${params.productId}`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/get/${params.productId}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -37,6 +43,43 @@ export default function ProductOverviewPage() {
             })
     }, [params.productId])
 
+    const getCart = () => {
+        try {
+            const raw = localStorage.getItem('cart')
+            return raw ? JSON.parse(raw) : []
+        } catch (e) {
+            return []
+        }
+    }
+
+    const saveCart = (cart) => {
+        localStorage.setItem('cart', JSON.stringify(cart))
+    }
+
+    const handleAddToCart = () => {
+        if (!product) return toast.error('No product to add.')
+        const id = product?.productId ?? product?.id ?? product?._id
+        const cart = getCart()
+        const existing = cart.find((item) => item.id === id)
+        if (existing) {
+            existing.quantity = (existing.quantity || 1) + 1
+        } else {
+            cart.push({
+                id,
+                name: product.name,
+                price: Number(product.actualPrice ?? product.labelledPrice ?? 0),
+                quantity: 1,
+                image: product.images?.[0] ?? null,
+            })
+        }
+        saveCart(cart)
+        toast.success('Added to cart')
+    }
+
+    const handleBuyNow = () => {
+        handleAddToCart()
+        navigate('/checkout')
+    }
     const hasDiscount = Number(product?.labelledPrice ?? 0) > Number(product?.actualPrice ?? 0)
     const discountPercent = hasDiscount
         ? Math.round(((Number(product?.labelledPrice) - Number(product?.actualPrice)) / Number(product?.labelledPrice)) * 100)
@@ -64,6 +107,28 @@ export default function ProductOverviewPage() {
                 <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 rounded-3xl border border-stone-200 bg-white/80 p-5 shadow-xl backdrop-blur-sm md:p-8 lg:grid-cols-2">
                     <div className="flex flex-col items-center justify-start">
                         <ImageSlider images={product?.images || []} />
+
+                        <div className="mt-6 w-full max-w-md">
+                            <div className="flex gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleAddToCart}
+                                    disabled={!product}
+                                    className="flex-1 rounded-xl bg-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-amber-700 disabled:opacity-50"
+                                >
+                                    Add to Cart
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={handleBuyNow}
+                                    disabled={!product}
+                                    className="flex-1 rounded-xl border border-amber-600 bg-white px-4 py-3 text-sm font-semibold text-amber-600 shadow-sm hover:bg-amber-50 disabled:opacity-50"
+                                >
+                                    Buy Now
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-6">
