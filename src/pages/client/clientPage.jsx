@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "../../components/header.jsx";
 import ProductPage from "./productPage.jsx";
 import ProductOverviewPage from "./productOverViewPage.jsx";
+import CartPage from "./cartPage.jsx";
 
 export default function ClientPage() {
     return (
@@ -11,7 +12,7 @@ export default function ClientPage() {
                     <Routes path="/">
                     <Route path="/" element={<h1>Home Page</h1>} />
                     <Route path="/products" element={<ProductPage />} />
-                    <Route path="/cart" element={<h1>Cart Page</h1>} />
+                    <Route path="/cart" element={<CartPage />} />
                     <Route path="/about-us" element={<h1>About Us Page</h1>} />
                     <Route path="/contact-us" element={<h1>Contact Us Page</h1>} />
                     <Route path="/product-overview/:productId" element={<ProductOverviewPage />} />
