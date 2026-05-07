@@ -4,6 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Loader from '../../components/loader.jsx';
 import ImageSlider from '../../components/imageSlider.jsx';
+import {addToCart} from '../../utils/cart.js';
 
 export default function ProductOverviewPage() {
     const params = useParams()
@@ -43,36 +44,9 @@ export default function ProductOverviewPage() {
             })
     }, [params.productId])
 
-    const getCart = () => {
-        try {
-            const raw = localStorage.getItem('cart')
-            return raw ? JSON.parse(raw) : []
-        } catch (e) {
-            return []
-        }
-    }
-
-    const saveCart = (cart) => {
-        localStorage.setItem('cart', JSON.stringify(cart))
-    }
-
     const handleAddToCart = () => {
         if (!product) return toast.error('No product to add.')
-        const id = product?.productId ?? product?.id ?? product?._id
-        const cart = getCart()
-        const existing = cart.find((item) => item.id === id)
-        if (existing) {
-            existing.quantity = (existing.quantity || 1) + 1
-        } else {
-            cart.push({
-                id,
-                name: product.name,
-                price: Number(product.actualPrice ?? product.labelledPrice ?? 0),
-                quantity: 1,
-                image: product.images?.[0] ?? null,
-            })
-        }
-        saveCart(cart)
+        addToCart(product, 1)
         toast.success('Added to cart')
     }
 
