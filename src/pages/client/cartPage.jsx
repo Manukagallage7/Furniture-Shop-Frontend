@@ -110,47 +110,56 @@ export default function CartPage() {
                                         </div>
 
                                     <div className="flex-grow">
-                                            <div className="flex justify-between items-start mb-3">
-                                                <h3 className="text-lg font-semibold text-stone-900">{item.name}</h3>
-                                                <p className="text-xl font-bold text-amber-700">
-                                                    Rs. {Number(item.price).toFixed(2)}
-                                                </p>
-                                            </div>
+                                            <h3 className="text-lg font-semibold text-stone-900 mb-3">{item.name}</h3>
 
-                                            <div className="flex justify-between items-center">
-                                                <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 p-2">
-                                                    <button
-                                                        onClick={() =>
-                                                            handleQuantityChange(
-                                                                item.productId || item.id,
-                                                                (item.quantity || 1) - 1
-                                                            )
-                                                        }
-                                                        className="p-1.5 text-stone-600 hover:text-stone-900 hover:bg-white rounded transition"
-                                                        aria-label="Decrease quantity"
-                                                    >
-                                                        <FiMinus size={18} />
-                                                    </button>
-                                                    <span className="w-8 text-center font-semibold text-stone-900">
-                                                        {item.quantity || 1}
-                                                    </span>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleQuantityChange(
-                                                                item.productId || item.id,
-                                                                (item.quantity || 1) + 1
-                                                            )
-                                                        }
-                                                        className="p-1.5 text-stone-600 hover:text-stone-900 hover:bg-white rounded transition"
-                                                        aria-label="Increase quantity"
-                                                    >
-                                                        <FiPlus size={18} />
-                                                    </button>
+                                            <div className="flex justify-between items-center gap-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="text-sm">
+                                                        <p className="text-stone-600">One piece:</p>
+                                                        <p className="text-lg font-bold text-amber-700">
+                                                            Rs. {Number(item.price).toFixed(2)}
+                                                        </p>
+                                                    </div>
                                                 </div>
 
-                                                <p className="text-lg font-bold text-stone-900">
-                                                    Rs. {(item.price * (item.quantity || 1)).toFixed(2)}
-                                                </p>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 p-2">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleQuantityChange(
+                                                                    item.productId || item.id,
+                                                                    (item.quantity || 1) - 1
+                                                                )
+                                                            }
+                                                            className="p-1 text-stone-600 hover:text-stone-900 hover:bg-white rounded transition"
+                                                            aria-label="Decrease quantity"
+                                                        >
+                                                            <FiMinus size={16} />
+                                                        </button>
+                                                        <span className="w-8 text-center font-semibold text-stone-900 text-sm">
+                                                            {item.quantity || 1}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleQuantityChange(
+                                                                    item.productId || item.id,
+                                                                    (item.quantity || 1) + 1
+                                                                )
+                                                            }
+                                                            className="p-1 text-stone-600 hover:text-stone-900 hover:bg-white rounded transition"
+                                                            aria-label="Increase quantity"
+                                                        >
+                                                            <FiPlus size={16} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div className="text-right">
+                                                    <p className="text-xs text-stone-600 mb-1">{item.quantity || 1} × Rs. {Number(item.price).toFixed(2)}</p>
+                                                    <p className="text-lg font-bold text-stone-900">
+                                                        Rs. {(item.price * (item.quantity || 1)).toFixed(2)}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
 
