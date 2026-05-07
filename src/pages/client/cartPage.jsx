@@ -50,10 +50,7 @@ export default function CartPage() {
         }
     }
 
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0)
-    const taxRate = 0.1
-    const tax = subtotal * taxRate
-    const total = subtotal + tax
+    const total = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0)
 
     if (loading) {
         return (
@@ -112,13 +109,15 @@ export default function CartPage() {
                                             )}
                                         </div>
 
-                                        <div className="flex-grow">
-                                            <h3 className="text-lg font-semibold text-stone-900 mb-2">{item.name}</h3>
-                                            <p className="text-2xl font-bold text-amber-700 mb-4">
-                                                Rs. {Number(item.price).toFixed(2)}
-                                            </p>
+                                    <div className="flex-grow">
+                                            <div className="flex justify-between items-start mb-3">
+                                                <h3 className="text-lg font-semibold text-stone-900">{item.name}</h3>
+                                                <p className="text-xl font-bold text-amber-700">
+                                                    Rs. {Number(item.price).toFixed(2)}
+                                                </p>
+                                            </div>
 
-                                            <div className="flex flex-wrap items-center gap-4">
+                                            <div className="flex justify-between items-center">
                                                 <div className="flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 p-2">
                                                     <button
                                                         onClick={() =>
@@ -149,12 +148,9 @@ export default function CartPage() {
                                                     </button>
                                                 </div>
 
-                                                <div className="text-right">
-                                                    <p className="text-sm text-stone-600">Subtotal</p>
-                                                    <p className="text-xl font-bold text-stone-900">
-                                                        Rs. {(item.price * (item.quantity || 1)).toFixed(2)}
-                                                    </p>
-                                                </div>
+                                                <p className="text-lg font-bold text-stone-900">
+                                                    Rs. {(item.price * (item.quantity || 1)).toFixed(2)}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -174,19 +170,8 @@ export default function CartPage() {
                             <div className="sticky top-6 rounded-3xl border border-stone-200 bg-white/80 p-6 shadow-lg backdrop-blur-sm">
                                 <h2 className="text-xl font-bold text-stone-900 mb-6">Order Summary</h2>
 
-                                <div className="space-y-4 mb-6 pb-6 border-b border-stone-200">
-                                    <div className="flex justify-between text-stone-700">
-                                        <span>Subtotal ({cart.length} items)</span>
-                                        <span className="font-medium">Rs. {subtotal.toFixed(2)}</span>
-                                    </div>
-                                    <div className="flex justify-between text-stone-700">
-                                        <span>Tax (10%)</span>
-                                        <span className="font-medium">Rs. {tax.toFixed(2)}</span>
-                                    </div>
-                                </div>
-
-                                <div className="mb-6 flex justify-between">
-                                    <span className="text-lg font-semibold text-stone-900">Total</span>
+                                <div className="flex justify-between items-center mb-6 pb-6 border-b border-stone-200">
+                                    <span className="text-lg font-semibold text-stone-900">Total ({cart.length} items)</span>
                                     <span className="text-2xl font-bold text-amber-700">Rs. {total.toFixed(2)}</span>
                                 </div>
 
