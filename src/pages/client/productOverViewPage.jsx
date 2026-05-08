@@ -51,8 +51,26 @@ export default function ProductOverviewPage() {
     }
 
     const handleBuyNow = () => {
-        handleAddToCart()
-        navigate('/checkout')
+        if (!product) {
+            toast.error('No product to buy.')
+            return
+        }
+
+        navigate('/checkout', {
+            state: {
+                buyNow: true,
+                item: {
+                    productId: product.productId,
+                    id: product.productId,
+                    name: product.name,
+                    price: Number(product.actualPrice ?? product.labelledPrice ?? 0),
+                    actualPrice: product.actualPrice,
+                    labelledPrice: product.labelledPrice,
+                    quantity: 1,
+                    images: product.images || [],
+                }
+            }
+        })
     }
     const hasDiscount = Number(product?.labelledPrice ?? 0) > Number(product?.actualPrice ?? 0)
     const discountPercent = hasDiscount
