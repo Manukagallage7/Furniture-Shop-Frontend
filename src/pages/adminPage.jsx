@@ -6,6 +6,7 @@ import { FaUserSecret } from "react-icons/fa";
 import ProductsAdminPage from "./admin/productsAdminPage";
 import AddProductPage from "./admin/addProductPage";
 import UpdateProductPage from "./admin/updateProductPage";
+import OrderAdminPage from "./admin/ordersAdminPage";
 
 export default function AdminPage() {
     return (
@@ -25,7 +26,7 @@ export default function AdminPage() {
                     <Route path="/products" element={<ProductsAdminPage />} />
                     <Route path="/products/addProduct" element={<AddProductPage />} />
                     <Route path="/products/editProduct" element={<UpdateProductPage />} />
-                    <Route path="/orders" element={<h1>Orders</h1>} />
+                    <Route path="/orders" element={<OrderAdminPage />} />
                     <Route path="/users" element={<h1>Users</h1>} />
 
                 </Routes>
