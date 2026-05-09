@@ -8,6 +8,23 @@ export default function OrderSuccessPage() {
     const orderData = location?.state?.order || {}
     const orderTotal = location?.state?.orderTotal || 0
 
+    if (!orderData?.orderId) {
+        return (
+            <div className="min-h-screen w-full bg-linear-to-b from-amber-50 via-white to-stone-100 px-4 py-8 flex items-center justify-center">
+                <div className="max-w-2xl text-center">
+                    <h1 className="text-2xl font-bold text-stone-900 mb-4">Order data not found</h1>
+                    <p className="text-stone-600 mb-6">We couldn't retrieve your order details. Check your email or contact support.</p>
+                    <button
+                        onClick={() => navigate("/my-orders")}
+                        className="rounded-xl bg-amber-600 px-6 py-3 text-base font-semibold text-white hover:bg-amber-700 transition"
+                    >
+                        View My Orders
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="min-h-screen w-full bg-linear-to-b from-amber-50 via-white to-stone-100 px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl">
@@ -70,16 +87,16 @@ export default function OrderSuccessPage() {
                             <div className="space-y-3">
                                 {orderData.items.map((item, idx) => (
                                     <div key={idx} className="flex items-start gap-4 rounded-lg bg-stone-50 p-4">
-                                        {item.images && (
+                                        {item.image && (
                                             <div className="h-16 w-16 shrink-0 rounded-lg overflow-hidden border border-stone-200 bg-white">
-                                                <img src={item.images} alt={item.name} className="h-full w-full object-cover" />
+                                                <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                                             </div>
                                         )}
                                         <div className="grow">
                                             <p className="font-semibold text-stone-900">{item.name}</p>
                                             <div className="mt-1 flex items-center gap-4 text-sm">
                                                 <span className="text-stone-600">Qty: <span className="font-medium">{item.quantity}</span></span>
-                                                <span className="text-amber-700 font-medium">Rs. {(item.actualPrice * item.quantity).toFixed(2)}</span>
+                                                <span className="text-amber-700 font-medium">Rs. {(item.price * item.quantity).toFixed(2)}</span>
                                             </div>
                                         </div>
                                     </div>
