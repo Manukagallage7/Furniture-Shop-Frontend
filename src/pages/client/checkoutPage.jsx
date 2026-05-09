@@ -11,6 +11,7 @@ export default function CheckoutPage() {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [cart, setCart] = useState([])
+    const [user, setUser] = useState(null)
     const [shipping, setShipping] = useState({
         name: "",
         email: "",
@@ -19,6 +20,31 @@ export default function CheckoutPage() {
     })
 
     useEffect(() => {
+
+        const token = localStorage.getItem("token")
+        if(token == null) {
+            toast.error("Please Login to checkout")
+            navigate("/login")
+            return
+        }else {
+            axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/get`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                setUser(res.data)
+                setShipping(prev => ({
+                    ...prev,
+                    name: res.data?.name || "",
+                    email: res.data?.email || ""
+                }))
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error)
+                toast.error("Failed to fetch user data")
+            })
+        }
         try {
             // If an item was passed through navigation state
             const incoming = location?.state?.item
@@ -71,7 +97,10 @@ export default function CheckoutPage() {
             name: shipping.name,
             email: shipping.email,
             phone: shipping.phone,
-            address: shipping.address
+            address: shipping.address,
+            subtotal: subtotal,
+            shippingCharges: shippingEstimate,
+            total: total
         }
 
         try {
@@ -81,13 +110,19 @@ export default function CheckoutPage() {
                 }
             })
             console.log("Order created:", response.data)
+
+            const orderData = response.data?.order || response.data
+            if (!orderData?.orderId) {
+                throw new Error("Order created but missing orderId")
+            }
+
             toast.success("Order placed — thank you!")
             clearCart()
             setCart([])
-            navigate("/order-success", { state: { orderTotal: total, order: response.data } })
+            navigate("/order-success", { state: { orderTotal: total, order: orderData } })
         } catch (error) {
             console.error("Error placing order:", error)
-            const backendMessage = error?.response?.data?.message
+            const backendMessage = error?.response?.data?.message || error.message
             toast.error(backendMessage || "Failed to place order")
         }
     }
@@ -122,7 +157,7 @@ export default function CheckoutPage() {
     }
 
     const subtotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * (item.quantity || 1)), 0)
-    const shippingEstimate = subtotal > 0 ? 250 : 0
+    const shippingEstimate = subtotal < 1000 ? 350 : 350 + (subtotal * 5 / 100)
     const total = subtotal + shippingEstimate
 
 
