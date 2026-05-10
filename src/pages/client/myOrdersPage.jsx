@@ -25,7 +25,7 @@ export default function MyOrdersPage() {
             }
 
             const response = await axios.get(
-                `${import.meta.env.VITE_BACKEND_URL}/api/orders/get`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/orders/get/1/100`,
                 {
                     headers: { Authorization: `Bearer ${token}` }
                 }
@@ -102,12 +102,6 @@ export default function MyOrdersPage() {
             <div className="mx-auto max-w-6xl">
                 {/* Header */}
                 <div className="mb-8">
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="mb-4 flex items-center gap-2 rounded-lg border border-stone-300 bg-white px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm hover:bg-stone-50 transition"
-                    >
-                        <FiArrowLeft size={18} /> Back
-                    </button>
                     <div>
                         <h1 className="text-4xl font-extrabold tracking-tight text-stone-900">My Orders</h1>
                         <p className="mt-2 text-lg text-stone-600">Track and manage your furniture orders</p>
@@ -280,6 +274,18 @@ export default function MyOrdersPage() {
                                         {/* Order Summary */}
                                         <div className="rounded-lg bg-white p-4 border border-stone-200">
                                             <div className="flex justify-between items-center">
+                                                <span className="font-semibold text-stone-900">Subtotal</span>
+                                                <span className="text-amber-700 font-medium">
+                                                    Rs. {(order.subtotal || 0).toFixed(2)}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center mt-2">
+                                                <span className="font-semibold text-stone-900">Shipping</span>
+                                                <span className="text-orange-600 font-medium">
+                                                    Rs. {(order.shippingCharges || 0).toFixed(2)}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center mt-4 border-t border-stone-200 pt-4">
                                                 <span className="font-semibold text-stone-900">Total Amount</span>
                                                 <span className="text-2xl font-bold text-amber-700">
                                                     Rs. {(order.total || 0).toFixed(2)}
