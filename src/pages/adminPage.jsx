@@ -7,6 +7,7 @@ import ProductsAdminPage from "./admin/productsAdminPage";
 import AddProductPage from "./admin/addProductPage";
 import UpdateProductPage from "./admin/updateProductPage";
 import OrderAdminPage from "./admin/ordersAdminPage";
+import UserAdminPage from "./admin/userAdminPage";
 
 export default function AdminPage() {
     return (
@@ -27,7 +28,7 @@ export default function AdminPage() {
                     <Route path="/products/addProduct" element={<AddProductPage />} />
                     <Route path="/products/editProduct" element={<UpdateProductPage />} />
                     <Route path="/orders" element={<OrderAdminPage />} />
-                    <Route path="/users" element={<h1>Users</h1>} />
+                    <Route path="/users" element={<UserAdminPage />} />
 
                 </Routes>
             </div>
