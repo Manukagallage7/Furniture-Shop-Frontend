@@ -2,31 +2,38 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import Loader from '../../components/loader.jsx';
 import ProductCard from '../../components/productCard.jsx';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductPage() {
-
-    const [products, setProducts] = useState([]);
-    const [isloading, setIsLoading] = useState(true);
+    const navigate = useNavigate()
+    const [products, setProducts] = useState([])
+    const [isloading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (isloading) {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token')
+            if (!token) {
+                toast.error("Please log in to view Products")
+                navigate("/login")
+                return
+            }
             axios.get(import.meta.env.VITE_BACKEND_URL + '/api/products/get', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
                 .then((res) => {
-                    const data = res.data;
+                    const data = res.data
 
                     if (Array.isArray(data)) {
-                        setProducts(data);
+                        setProducts(data)
                     } else if (Array.isArray(data?.product)) {
-                        setProducts(data.product);
+                        setProducts(data.product)
                     } else if (Array.isArray(data?.data)) {
-                        setProducts(data.data);
+                        setProducts(data.data)
                     } else if (Array.isArray(data?.products)) {
-                        setProducts(data.products);
+                        setProducts(data.products)
                     } else {
                         console.warn('Unexpected products API response:', data);
                     }
