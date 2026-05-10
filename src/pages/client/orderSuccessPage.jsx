@@ -96,7 +96,7 @@ export default function OrderSuccessPage() {
                                             <p className="font-semibold text-stone-900">{item.name}</p>
                                             <div className="mt-1 flex items-center gap-4 text-sm">
                                                 <span className="text-stone-600">Qty: <span className="font-medium">{item.quantity}</span></span>
-                                                <span className="text-amber-700 font-medium">Rs. {(item.price * item.quantity).toFixed(2)}</span>
+                                                <span className="text-amber-700 font-medium">Rs. {(item.actualPrice * item.quantity).toFixed(2)}</span>
                                             </div>
                                         </div>
                                     </div>
