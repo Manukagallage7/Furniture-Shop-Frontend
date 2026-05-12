@@ -7,6 +7,8 @@ import CheckoutPage from "./checkoutPage.jsx";
 import OrderSuccessPage from "./orderSuccessPage.jsx";
 import MyOrdersPage from "./myOrdersPage.jsx";
 import UserProfilePage from "./userprofilePage.jsx";
+import AboutUsPage from "./aboutusPage.jsx";
+import ContactUsPage from "./contactusPage.jsx";
 
 export default function ClientPage() {
     return (
@@ -17,8 +19,8 @@ export default function ClientPage() {
                     <Route path="/" element={<h1>Home Page</h1>} />
                     <Route path="/products" element={<ProductPage />} />
                     <Route path="/cart" element={<CartPage />} />
-                    <Route path="/about-us" element={<h1>About Us Page</h1>} />
-                    <Route path="/contact-us" element={<h1>Contact Us Page</h1>} />
+                    <Route path="/about-us" element={<AboutUsPage />} />
+                    <Route path="/contact-us" element={<ContactUsPage />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/order-success" element={<OrderSuccessPage />} />
                     <Route path="/my-orders" element={<MyOrdersPage />} />
