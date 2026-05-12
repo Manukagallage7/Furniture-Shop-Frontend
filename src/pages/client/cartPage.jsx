@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import { getCart, addToCart, removeFromCart, clearCart } from "../../utils/cart"
 import { MdDelete } from "react-icons/md"
 import { FiMinus, FiPlus } from "react-icons/fi"

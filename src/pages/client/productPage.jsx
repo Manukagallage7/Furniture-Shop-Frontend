@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import Loader from '../../components/loader.jsx';
 import ProductCard from '../../components/productCard.jsx';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductPage() {

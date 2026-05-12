@@ -2,7 +2,7 @@ import { BiPlus } from 'react-icons/bi';
 import { Link, useNavigate } from "react-router-dom";
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import Loader from '../../components/loader';
 
 export default function ProductsAdminPage() {

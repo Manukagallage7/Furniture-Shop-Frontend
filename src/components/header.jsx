@@ -9,8 +9,11 @@ export default function Header() {
             <Link to="/about-us" className="text-white text-2xl font-bold py-4">About Us</Link>
             <Link to="/contact-us" className="text-white text-2xl font-bold py-4">Contact Us</Link>
             <Link to="/my-orders" className="text-white text-2xl font-bold py-4">My Orders</Link>
-            <Link to="/cart" className=" absolute right-30 text-white text-2xl font-bold py-4">
+            <Link to="/cart" className=" absolute right-95 text-white text-2xl font-bold py-4">
                 <BiCart className="text-white text-3xl ml-4" />
+            </Link>
+            <Link to="/profile" className="absolute right-10 text-white text-2xl font-bold py-4">
+                Profile
             </Link>
         </header>
     )

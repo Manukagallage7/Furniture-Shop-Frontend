@@ -8,6 +8,7 @@ import AddProductPage from "./admin/addProductPage";
 import UpdateProductPage from "./admin/updateProductPage";
 import OrderAdminPage from "./admin/ordersAdminPage";
 import UserAdminPage from "./admin/userAdminPage";
+import AdminProfilePage from "./admin/adminProfilePage";
 
 export default function AdminPage() {
     return (
@@ -19,6 +20,7 @@ export default function AdminPage() {
                     <Link to="/admin/products" className="flex items-center p-4 hover:text-gray-200 gap-2"><MdProductionQuantityLimits /> Products</Link>
                     <Link to="/admin/orders" className="flex items-center p-4 hover:text-gray-200 gap-2"><FaFirstOrderAlt /> Orders</Link>
                     <Link to="/admin/users" className="flex items-center p-4 hover:text-gray-200 gap-2"><FaUserSecret /> Users</Link>
+                    <Link to="/admin/profile" className="flex items-center p-4 hover:text-gray-200 gap-2"><FaUserSecret /> Profile</Link>
                 </div>
             </div>
             <div className="w-[calc(100%-300px)] bg-blue-900 h-full overflow-y-auto">
@@ -29,7 +31,7 @@ export default function AdminPage() {
                     <Route path="/products/editProduct" element={<UpdateProductPage />} />
                     <Route path="/orders" element={<OrderAdminPage />} />
                     <Route path="/users" element={<UserAdminPage />} />
-
+                    <Route path="/profile" element={<AdminProfilePage />} />
                 </Routes>
             </div>
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-import toast from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import { FiPackage, FiTruck, FiCheckCircle, FiClock, FiArrowLeft } from "react-icons/fi"
 import Loader from "../../components/loader"
 
@@ -34,7 +34,7 @@ export default function MyOrdersPage() {
             if (response.data?.orders) {
                 setOrders(response.data.orders)
                 if (response.data.orders.length === 0) {
-                    toast.info("No orders found")
+                    toast.success("No orders found")
                 }
             }
         } catch (error) {

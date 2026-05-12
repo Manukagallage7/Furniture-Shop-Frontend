@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import Loader from '../../components/loader.jsx';
 import ImageSlider from '../../components/imageSlider.jsx';
 import {addToCart} from '../../utils/cart.js';

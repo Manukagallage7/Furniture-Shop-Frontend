@@ -2,12 +2,34 @@ import { Link, useNavigate} from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import {useGoogleLogin} from '@react-oauth/google';
 
 export default function LoginPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const googleLogin = useGoogleLogin(
+        {
+            onSuccess: async (tokenRes) => {
+                try {
+                    const response = await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/users/google-login", {
+                        token: tokenRes.access_token
+                    });
+                    localStorage.setItem("token", response.data.token);
+                    toast.success("Login successful!");
+                    if(response.data.role == "admin"){
+                        navigate("/admin")
+                    } else if(response.data.role == "user"){
+                        navigate("/")
+                    }
+                } catch (error) {
+                    console.error(error);
+                    toast.error("Google login failed!");
+                }
+            }
+        }
+    )
 
     async function login(){
         await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/users/login", {
@@ -105,6 +127,16 @@ export default function LoginPage() {
                             className="w-full h-12 mt-8 bg-gradient-to-r from-amber-600 to-amber-700 text-white font-bold rounded-lg hover:from-amber-700 hover:to-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 focus:ring-offset-stone-800 transform hover:scale-105 active:scale-95 transition duration-200 shadow-lg"
                         >
                             Sign In
+                        </button>
+
+                        {/* Google Login Button */}
+                        <button
+                            type="button"
+                            onClick={() => googleLogin()}
+                            className="w-full h-12 mt-4 bg-white text-gray-800 font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-stone-800 transform hover:scale-105 active:scale-95 transition duration-200 shadow-md flex items-center justify-center gap-2"
+                        >
+                            <img src="/google-logo.png" alt="Google Logo" className="w-5 h-5" />
+                            Sign in with Google
                         </button>
 
                     </div>

@@ -6,6 +6,7 @@ import CartPage from "./cartPage.jsx";
 import CheckoutPage from "./checkoutPage.jsx";
 import OrderSuccessPage from "./orderSuccessPage.jsx";
 import MyOrdersPage from "./myOrdersPage.jsx";
+import UserProfilePage from "./userprofilePage.jsx";
 
 export default function ClientPage() {
     return (
@@ -22,6 +23,7 @@ export default function ClientPage() {
                     <Route path="/order-success" element={<OrderSuccessPage />} />
                     <Route path="/my-orders" element={<MyOrdersPage />} />
                     <Route path="/product-overview/:productId" element={<ProductOverviewPage />} />
+                    <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/*" element={<h1>404 Page</h1>} />
                 </Routes>
                 </div>

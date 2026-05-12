@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom"
-import toast from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import { FiCheckCircle, FiTruck, FiHome } from "react-icons/fi"
 
 export default function OrderSuccessPage() {
