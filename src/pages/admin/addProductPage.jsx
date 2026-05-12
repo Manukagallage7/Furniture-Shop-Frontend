@@ -306,15 +306,28 @@ export default function AddProductPage() {
                             {/* Category */}
                             <div className="flex flex-col gap-1.5 sm:gap-2">
                                 <label className="font-semibold text-gray-800 text-xs sm:text-sm md:text-sm uppercase tracking-wide">Category <span className="text-red-500">*</span></label>
-                                <input
-                                    type="text"
+                                <select
                                     name="category"
                                     value={formData.category}
                                     onChange={handleInputChange}
-                                    className="border-2 border-gray-200 rounded-lg p-2.5 sm:p-3 md:p-3 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition duration-200 text-xs sm:text-sm md:text-base"
-                                    placeholder="e.g., Furniture Collections"
+                                    className="border-2 border-gray-200 rounded-lg p-2.5 sm:p-3 md:p-3 focus:outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition duration-200 text-xs sm:text-sm md:text-base bg-white"
                                     required
-                                />
+                                >
+                                    <option value="">Select a category</option>
+                                    <option value="Furniture Collections">Furniture Collections</option>
+                                    <option value="Living Room">Living Room</option>
+                                    <option value="Bedroom">Bedroom</option>
+                                    <option value="Dining Room">Dining Room</option>
+                                    <option value="Office">Office</option>
+                                    <option value="Outdoor">Outdoor</option>
+                                    <option value="Decor">Decor</option>
+                                    <option value="Lighting">Lighting</option>
+                                    <option value="Rugs">Rugs</option>
+                                    <option value="Storage">Storage</option>
+                                    <option value="Kids">Kids</option>
+                                    <option value="Pet">Pet</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
 
                             {/* Brand */}
