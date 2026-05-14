@@ -9,6 +9,7 @@ import MyOrdersPage from "./myOrdersPage.jsx";
 import UserProfilePage from "./userprofilePage.jsx";
 import AboutUsPage from "./aboutusPage.jsx";
 import ContactUsPage from "./contactusPage.jsx";
+import HomePage from "./homePage.jsx";
 
 export default function ClientPage() {
     return (
@@ -16,7 +17,7 @@ export default function ClientPage() {
                 <Header />
                 <div className="w-full h-[calc(100%-100px)]">
                     <Routes path="/">
-                    <Route path="/" element={<h1>Home Page</h1>} />
+                    <Route path="/" element={<HomePage />} />
                     <Route path="/products" element={<ProductPage />} />
                     <Route path="/cart" element={<CartPage />} />
                     <Route path="/about-us" element={<AboutUsPage />} />
