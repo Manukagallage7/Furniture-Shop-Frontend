@@ -142,7 +142,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Register Link */}
-                    <div className="mt-8 pt-6 border-t border-amber-700 text-center">
+                    <div className="mt-8 pt-6 border-t border-amber-700 text-center space-y-2">
                         <p className="text-amber-100 text-sm">
                             Don't have an account?{" "}
                             <Link 
@@ -150,6 +150,14 @@ export default function LoginPage() {
                                 className="font-semibold text-amber-400 hover:text-amber-300 transition duration-300 hover:underline"
                             >
                                 Create one now
+                            </Link>
+                        </p>
+                        <p className="text-amber-100 text-sm">
+                            <Link 
+                                to="/forgot-password" 
+                                className="font-semibold text-amber-400 hover:text-amber-300 transition duration-300 hover:underline"
+                            >
+                                Forgot your password?
                             </Link>
                         </p>
                     </div>
